@@ -1,6 +1,5 @@
 
 from flask import Flask, render_template, request, redirect, url_for
-from matplotlib.pyplot import title
 
 import post_storage
 
@@ -30,6 +29,28 @@ def delete(post_id):
     post_storage.delete_post(post_id)
     # Redirect back to the home page
     return redirect(url_for('index'))
+
+
+@app.route('/update/<int:post_id>', methods=['GET', 'POST'])
+def update(post_id):
+    # Fetch the blog posts from the JSON file
+    post = post_storage.fetch_post_by_id(post_id)
+    if post is None:
+        # Post not found
+        return "Post not found", 404
+
+    if request.method == 'POST':
+    # Update the post in the JSON file
+        author = request.form.get("author")
+        title = request.form.get("title")
+        content = request.form.get("content")
+        post_storage.update_post(author, title, content, post_id)
+    # Redirect back to index
+        return redirect(url_for("index"))
+    # Else, it's a GET request
+    elif request.method == "GET":
+        # So display the update.html page
+        return render_template('update.html', post=post)
 
 
 

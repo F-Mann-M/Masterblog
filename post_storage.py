@@ -36,9 +36,25 @@ def delete_post(post_id):
     for post in posts:
         if post["id"] == post_id:
             posts.remove(post)
+
     write_file(posts)
 
 
+def fetch_post_by_id(post_id):
+    posts = get_posts()
+    for post in posts:
+        if post["id"] == post_id:
+            return post
+
+def update_post(author, title, content, post_id):
+    posts = get_posts()
+    for post in posts:
+        if post["id"] == post_id:
+            post["author"] = author
+            post["title"] = title
+            post["content"] = content
+    write_file(posts)
+
 def write_file(file):
-    with open("data/post_data.json", "w") as handel:
-        json.dump(file, handel)
+    with open("data/post_data.json", "w", encoding='utf-8') as handel:
+        json.dump(file, handel, ensure_ascii=False, indent=4)
