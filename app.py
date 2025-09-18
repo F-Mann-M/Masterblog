@@ -8,7 +8,9 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     blog_posts = post_storage.get_posts()
+    print(blog_posts)
     return render_template('index.html', posts=blog_posts, title="Blog posts")
+
 
 
 @app.route('/add', methods=['GET', 'POST'])

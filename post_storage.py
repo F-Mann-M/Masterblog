@@ -1,25 +1,44 @@
 import json
+import os
 
 
 def load_file(file_path):
     """loads json and returns as list of dicts"""
+    if not os.path.exists(file_path):
+        return []
+
     with open(file_path, "r") as handel:
-        posts = json.load(handel)
-        return posts
+        try:
+            posts = json.load(handel)
+            return posts
+        except Exception as e:
+            # print(f"Error: {e}")
+            return []
+
 
 def get_posts():
     """loads jason and returns list of dicts of the posts"""
+
     posts = load_file("data/post_data.json")
-    # for post in posts:
-    #     print(f"id: {post["id"]}, author: {post["author"]}, title: {post["title"]}")
+    if not posts:
+        print("There are no posts yet.")
+        posts = []
     return posts
+
 
 def get_new_post_id():
     posts = get_posts()
     post_id = []
-    for post in posts:
-        post_id.append(post["id"])
-    return max(post_id) + 1
+    # Store all ids in list to get max id
+    if posts:
+        for post in posts:
+            if post["id"]:
+                post_id.append(post["id"])
+        return max(post_id) + 1
+    else:
+        post_id = 1
+        return post_id
+
 
 
 def add_post(author, title, content):
