@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    blog_posts = post_storage.get_post()
+    blog_posts = post_storage.get_posts()
     return render_template('index.html', posts=blog_posts, title="Blog posts")
 
 
@@ -22,6 +22,15 @@ def add():
         post_storage.add_post(author, title, content)
         return redirect(url_for('index'))
     return render_template('add.html', title="Add your post")
+
+
+@app.route('/delete/<int:post_id>')
+def delete(post_id):
+    # Find the blog post with the given id and remove it from the list
+    post_storage.delete_post(post_id)
+    # Redirect back to the home page
+    return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':

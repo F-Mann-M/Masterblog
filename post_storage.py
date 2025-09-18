@@ -7,7 +7,7 @@ def load_file(file_path):
         posts = json.load(handel)
         return posts
 
-def get_post():
+def get_posts():
     """loads jason and returns list of dicts of the posts"""
     posts = load_file("data/post_data.json")
     # for post in posts:
@@ -15,7 +15,7 @@ def get_post():
     return posts
 
 def get_new_post_id():
-    posts = get_post()
+    posts = get_posts()
     post_id = []
     for post in posts:
         post_id.append(post["id"])
@@ -25,11 +25,18 @@ def get_new_post_id():
 def add_post(author, title, content):
     """load json, add new post along with author, title, content"""
     post_id = get_new_post_id()
-    posts = get_post()
+    posts = get_posts()
     new_post_dict = {"id": post_id, "author": author, "title": title, "content": content}
     posts.append(new_post_dict)
     write_file(posts)
 
+
+def delete_post(post_id):
+    posts = get_posts()
+    for post in posts:
+        if post["id"] == post_id:
+            posts.remove(post)
+    write_file(posts)
 
 
 def write_file(file):
