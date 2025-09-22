@@ -48,7 +48,7 @@ def update(post_id):
     # Redirect back to index
         return redirect(url_for("index"))
     # Else, it's a GET request
-    elif request.method == "GET":
+    else:
         # So display the update.html page
         return render_template('update.html', post=post)
 

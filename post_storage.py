@@ -10,9 +10,13 @@ def load_file(file_path):
     with open(file_path, "r") as handel:
         try:
             posts = json.load(handel)
+            if not isinstance(posts, list):
+                raise TypeError("Data have to be a list of dictionaries")
             return posts
-        except Exception as e:
-            # print(f"Error: {e}")
+        except TypeError as e:
+            print(f"Error: {e}")
+        except json.JSONDecodeError:
+            print("Error: Can not decode JSON")
             return []
 
 
